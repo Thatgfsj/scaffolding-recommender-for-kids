@@ -30,9 +30,6 @@ scaffolding-recommender-for-kids/
 ├── frontend/
 │   ├── index.html            # Web前端界面
 │   └── server.py             # 本地服务器
-├── SELF_CHECK_ROUND_1.md     # 第一轮自查报告
-├── SELF_CHECK_ROUND_2.md     # 第二轮自查报告
-├── SELF_CHECK_ROUND_3.md     # 第三轮自查报告
 ├── README.md                 # 本文件
 └── .gitignore                # Git忽略文件
 ```
