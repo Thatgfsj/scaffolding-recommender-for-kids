@@ -12,10 +12,12 @@
 
 | 特性 | 描述 |
 |-----|-----|
+| **ML 增强推荐** | 轻量机器学习 + 内容相似度计算 + 协同过滤思想 |
 | **对抗性目标函数** | 不优化点击率/时长，而是优化认知多样性熵、价值观势能、自然结束率 |
 | **强制多样性配额** | 60% 教育相关 + 20% 跨域探索 + 10% 引导链路 + 10% 随机发现 |
 | **透明推荐** | 用户可点击"为什么推荐这个？"，查看知识图谱路径 |
 | **家长白盒** | 语义输入培育意向，查看周报透明度报告 |
+| **Web 前端** | 交互式可视化界面，实时展示算法决策 |
 | **安全护栏** | AI泔水内容检测，价值观漂移监控 |
 
 ## 📁 项目结构
@@ -25,6 +27,9 @@ scaffolding-recommender-for-kids/
 ├── DESIGN.md                 # 技术设计文档
 ├── guided_recommender.py     # 核心推荐器实现
 ├── demo.py                   # 推演案例演示
+├── frontend/
+│   ├── index.html            # Web前端界面
+│   └── server.py             # 本地服务器
 ├── SELF_CHECK_ROUND_1.md     # 第一轮自查报告
 ├── SELF_CHECK_ROUND_2.md     # 第二轮自查报告
 ├── SELF_CHECK_ROUND_3.md     # 第三轮自查报告
@@ -43,7 +48,7 @@ scaffolding-recommender-for-kids/
 
 ```bash
 # 克隆仓库
-git clone https://github.com/YOUR_USERNAME/scaffolding-recommender-for-kids.git
+git clone https://github.com/Thatgfsj/scaffolding-recommender-for-kids.git
 cd scaffolding-recommender-for-kids
 
 # 运行简单演示
@@ -51,6 +56,14 @@ python demo.py --simple
 
 # 运行完整推演案例
 python demo.py
+```
+
+### Web 前端预览
+
+```bash
+cd frontend
+python server.py
+# 然后访问 http://localhost:8080
 ```
 
 ### 基本使用
@@ -168,6 +181,41 @@ J = w_A × A - w_B × InfoBubbles(p) + w_C × ΔV + w_D × NaturalEndRate
 - [SELF_CHECK_ROUND_1.md](./SELF_CHECK_ROUND_1.md)
 - [SELF_CHECK_ROUND_2.md](./SELF_CHECK_ROUND_2.md)
 - [SELF_CHECK_ROUND_3.md](./SELF_CHECK_ROUND_3.md)
+
+## 🧠 ML 增强技术
+
+### 内容相似度计算
+
+使用余弦相似度计算内容间的价值观向量距离：
+
+```javascript
+computeSimilarity(videoA, videoB) {
+    // Cosine similarity on value vector
+    const dotProduct = videoA.values.reduce((sum, key) => 
+        sum + videoA.values[key] * videoB.values[key], 0);
+    const normA = Math.sqrt(videoA.values.reduce((sum, key) => 
+        sum + videoA.values[key] ** 2, 0));
+    return dotProduct / (normA * normB + 0.0001);
+}
+```
+
+### Learning to Rank
+
+综合7个因子计算推荐得分：
+
+| 因子 | 权重 | 说明 |
+|-----|------|-----|
+| A. 短期愉悦度 | 25% | 内容基础质量 |
+| B. 茧房惩罚 | 25% | 多样性保护 |
+| C. 价值观势能 | 30% | 培育目标对齐 |
+| D. 自然结束奖励 | 15% | 主动控制激励 |
+| E. 探索奖励 | 15% | 跨域发现激励 |
+| F. 引导链路 | 10% | 认知递进 |
+| G. 个性化相似度 | 10% | 历史偏好匹配 |
+
+### 协同过滤（简化版）
+
+基于用户历史观看模式，计算内容相似度矩阵，预测用户对未观看内容的潜在兴趣。
 
 ## 🤝 设计哲学
 
