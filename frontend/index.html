@@ -5,406 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>扶光 - 脚手架算法儿童推荐系统</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
         
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+        .header { text-align: center; color: white; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .header p { font-size: 1.2em; opacity: 0.9; }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .card { background: white; border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .card-title { font-size: 1.3em; color: #333; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         
-        /* Header */
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
+        .user-setup { display: flex; gap: 16px; flex-wrap: wrap; }
+        .input-group { flex: 1; min-width: 200px; }
+        .input-group label { display: block; margin-bottom: 8px; color: #666; font-size: 0.9em; }
+        .input-group input, .input-group select { width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1em; transition: border-color 0.3s; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: #667eea; }
         
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #f0f0f0; color: #666; }
         
-        .header p {
-            font-size: 1.2em;
-            opacity: 0.9;
-        }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .video-card { background: #f8f9fa; border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+        .video-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); }
+        .video-thumbnail { height: 140px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3em; }
+        .video-info { padding: 16px; }
+        .video-title { font-size: 1em; font-weight: 600; color: #333; margin-bottom: 8px; line-height: 1.4; }
         
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        }
+        .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+        .tag { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 500; }
+        .tag-cog { background: #e3f2fd; color: #1565c0; }
+        .tag-emo { background: #fce4ec; color: #c2185b; }
+        .tag-social { background: #e8f5e9; color: #2e7d32; }
         
-        .card-title {
-            font-size: 1.3em;
-            color: #333;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .score-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .score-bar { flex: 1; height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; }
+        .score-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); }
+        .score-value { font-weight: 600; color: #667eea; font-size: 0.9em; }
         
-        /* User Setup */
-        .user-setup {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
+        .reason { font-size: 0.85em; color: #666; margin-top: 8px; padding: 8px; background: white; border-radius: 6px; border-left: 3px solid #667eea; }
+        .strategy-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; background: #667eea; color: white; margin-left: 8px; }
         
-        .input-group {
-            flex: 1;
-            min-width: 200px;
-        }
+        .action-buttons { display: flex; gap: 6px; margin-top: 12px; }
+        .action-btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8em; transition: all 0.3s; }
+        .action-btn.watch { background: #e8f5e9; color: #2e7d32; }
+        .action-btn.end { background: #fff3e0; color: #e65100; }
+        .action-btn.skip { background: #f5f5f5; color: #666; }
+        .action-btn:hover { transform: scale(1.05); }
         
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-            font-size: 0.9em;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 4px; }
+        .stat-label { font-size: 0.85em; opacity: 0.9; }
+        .stat-sub { font-size: 0.75em; opacity: 0.7; margin-top: 4px; }
         
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
+        .growth-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; }
+        .growth-card { background: #f8f9fa; padding: 16px; border-radius: 12px; }
+        .growth-title { font-weight: 600; color: #333; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .growth-value { font-size: 1.8em; font-weight: bold; color: #667eea; }
+        .growth-desc { font-size: 0.8em; color: #666; margin-top: 4px; }
+        .growth-bar { height: 8px; background: #e0e0e0; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+        .growth-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
         
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+        /* Parenting Knobs */
+        .knobs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .knob-section { background: #f8f9fa; padding: 20px; border-radius: 12px; }
+        .knob-title { font-weight: 600; color: #333; margin-bottom: 12px; font-size: 1.1em; }
+        .knob-row { margin-bottom: 16px; }
+        .knob-label { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9em; color: #666; }
+        .knob-slider { width: 100%; height: 8px; border-radius: 4px; background: #e0e0e0; -webkit-appearance: none; appearance: none; }
+        .knob-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); cursor: pointer; }
         
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+        .value-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .value-chip { padding: 8px 14px; border: 2px solid #e0e0e0; border-radius: 20px; cursor: pointer; transition: all 0.3s; font-size: 0.9em; }
+        .value-chip:hover { border-color: #667eea; }
+        .value-chip.active { border-color: #667eea; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; }
+        .tab { padding: 8px 16px; border: none; background: none; cursor: pointer; font-size: 1em; color: #666; border-radius: 8px 8px 0 0; transition: all 0.3s; }
+        .tab:hover { background: #f0f0f0; }
+        .tab.active { background: #667eea; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f0f0f0;
-            color: #666;
-        }
-        
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        /* Video Grid */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .video-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .video-thumbnail {
-            height: 160px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3em;
-        }
-        
-        .video-info {
-            padding: 16px;
-        }
-        
-        .video-title {
-            font-size: 1em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-        
-        .video-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-        
-        .tag {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75em;
-            font-weight: 500;
-        }
-        
-        .tag-complexity {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .tag-value {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-        
-        .video-score {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .score-bar {
-            width: 100px;
-            height: 6px;
-            background: #e0e0e0;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        
-        .score-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 3px;
-            transition: width 0.5s;
-        }
-        
-        .score-value {
-            font-weight: 600;
-            color: #667eea;
-        }
-        
-        .video-reason {
-            font-size: 0.85em;
-            color: #666;
-            margin-top: 8px;
-            padding: 8px;
-            background: white;
-            border-radius: 6px;
-            border-left: 3px solid #667eea;
-        }
-        
-        /* Stats Dashboard */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        
-        /* Value Distribution */
-        .value-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        
-        .value-bar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .value-label {
-            width: 80px;
-            font-size: 0.9em;
-            color: #666;
-        }
-        
-        .value-track {
-            flex: 1;
-            height: 24px;
-            background: #f0f0f0;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .value-fill {
-            height: 100%;
-            border-radius: 12px;
-            transition: width 0.5s;
-        }
-        
-        .value-fill.curiosity { background: linear-gradient(90deg, #ff6b6b, #ee5a5a); }
-        .value-fill.empathy { background: linear-gradient(90deg, #4ecdc4, #3db8b0); }
-        .value-fill.responsibility { background: linear-gradient(90deg, #45b7d1, #3494a8); }
-        .value-fill.diversity { background: linear-gradient(90deg, #96ceb4, #7cb99f); }
-        .value-fill.environment { background: linear-gradient(90deg, #a8e6cf, #8fd4b8); }
-        
-        .value-percent {
-            width: 50px;
-            text-align: right;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        /* Parent Intent */
-        .parent-intent {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        
-        .intent-chip {
-            padding: 10px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95em;
-        }
-        
-        .intent-chip:hover {
-            border-color: #667eea;
-            background: #f5f5f5;
-        }
-        
-        .intent-chip.active {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            transition: all 0.3s;
-        }
-        
-        .action-btn.watch {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-        
-        .action-btn.end {
-            background: #fff3e0;
-            color: #e65100;
-        }
-        
-        .action-btn.skip {
-            background: #f5f5f5;
-            color: #666;
-        }
-        
-        .action-btn:hover {
-            transform: scale(1.05);
-        }
+        /* Dashboard */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+        .dash-card { background: #f8f9fa; padding: 16px; border-radius: 12px; }
+        .dash-title { font-weight: 600; color: #333; margin-bottom: 12px; font-size: 0.95em; }
+        .dash-metric { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #e0e0e0; }
+        .dash-metric:last-child { border-bottom: none; }
+        .dash-metric-label { color: #666; font-size: 0.9em; }
+        .dash-metric-value { font-weight: 600; color: #333; }
+        .dash-metric-value.good { color: #2e7d32; }
+        .dash-metric-value.warn { color: #e65100; }
         
         /* Log */
-        .log-container {
-            max-height: 300px;
-            overflow-y: auto;
-            background: #1a1a2e;
-            border-radius: 8px;
-            padding: 16px;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.85em;
-        }
-        
-        .log-entry {
-            color: #a0a0a0;
-            margin-bottom: 8px;
-            padding-left: 12px;
-            border-left: 2px solid #333;
-        }
-        
+        .log-container { max-height: 300px; overflow-y: auto; background: #1a1a2e; border-radius: 8px; padding: 16px; font-family: 'Monaco', monospace; font-size: 0.85em; }
+        .log-entry { color: #a0a0a0; margin-bottom: 8px; padding-left: 12px; border-left: 2px solid #333; }
         .log-entry.action { border-color: #4ecdc4; }
         .log-entry.recommend { border-color: #667eea; }
         .log-entry.system { border-color: #ff6b6b; }
+        .log-time { color: #666; margin-right: 8px; }
         
-        .log-time {
-            color: #666;
-            margin-right: 8px;
-        }
-        
-        /* Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .video-grid { grid-template-columns: 1fr; }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @media (max-width: 768px) { .header h1 { font-size: 1.8em; } .video-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🌟 扶光 - 脚手架算法</h1>
             <p>儿童短视频推荐系统 · 认知发展 & 价值观培育</p>
@@ -414,64 +126,100 @@
         <div class="card">
             <div class="card-title">👤 用户设置</div>
             <div class="user-setup">
-                <div class="input-group">
-                    <label>用户名</label>
-                    <input type="text" id="username" placeholder="给小明起个名字" value="小明">
-                </div>
-                <div class="input-group">
-                    <label>年龄段</label>
-                    <select id="ageGroup">
-                        <option value="6-9岁" selected>6-9岁</option>
-                        <option value="10-12岁">10-12岁</option>
-                    </select>
-                </div>
-                <div class="input-group" style="align-self: flex-end;">
-                    <button class="btn btn-primary" onclick="initUser()">开始体验</button>
-                </div>
+                <div class="input-group"><label>用户名</label><input type="text" id="username" placeholder="给小明起个名字" value="小明"></div>
+                <div class="input-group"><label>年龄段</label><select id="ageGroup"><option value="6-9岁" selected>6-9岁</option><option value="10-12岁">10-12岁</option></select></div>
+                <div class="input-group" style="align-self: flex-end;"><button class="btn btn-primary" onclick="initUser()">开始体验</button></div>
             </div>
         </div>
         
-        <!-- Stats -->
+        <!-- Stats & Growth -->
         <div class="card" id="statsCard" style="display: none;">
             <div class="card-title">📊 学习进度</div>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="statWatches">0</div>
-                    <div class="stat-label">观看次数</div>
+            <div class="stats-grid" id="statsGrid"></div>
+            
+            <div class="growth-grid" id="growthGrid">
+                <div class="growth-card">
+                    <div class="growth-title">🚀 ZPD Velocity</div>
+                    <div class="growth-value" id="zpdVelocity">0.0</div>
+                    <div class="growth-desc">挑战更高难度的频率变化</div>
+                    <div class="growth-bar"><div class="growth-fill" id="zpdBar" style="width: 0%; background: linear-gradient(90deg, #667eea, #764ba2);"></div></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statEntropy">0.0</div>
-                    <div class="stat-label">认知多样性熵</div>
+                <div class="growth-card">
+                    <div class="growth-title">🛠️ Tool Appropriation</div>
+                    <div class="growth-value" id="toolAppro">0.0</div>
+                    <div class="growth-desc">使用脚手架后独立解决比例</div>
+                    <div class="growth-bar"><div class="growth-fill" id="toolBar" style="width: 0%; background: linear-gradient(90deg, #4ecdc4, #3db8b0);"></div></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statEndRate">0%</div>
-                    <div class="stat-label">主动结束率</div>
+                <div class="growth-card">
+                    <div class="growth-title">✨ Curiosity Spark</div>
+                    <div class="growth-value" id="curiositySpark">0</div>
+                    <div class="growth-desc">自发探索非推荐内容的次数</div>
+                    <div class="growth-bar"><div class="growth-fill" id="sparkBar" style="width: 0%; background: linear-gradient(90deg, #ff6b6b, #ee5a5a);"></div></div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statComplexity">L1</div>
-                    <div class="stat-label">认知复杂度</div>
+                <div class="growth-card">
+                    <div class="growth-title">📈 ZPD 状态</div>
+                    <div class="growth-value" id="zpdStatus">L1-L3</div>
+                    <div class="growth-desc">当前最近发展区范围</div>
                 </div>
             </div>
         </div>
         
-        <!-- Parent Intent -->
+        <!-- Parenting Knobs -->
         <div class="card" id="parentCard" style="display: none;">
-            <div class="card-title">👨‍👩‍👧 家长培育意向</div>
-            <div class="parent-intent" id="intentChips">
-                <div class="intent-chip" onclick="setIntent('好奇心')">🌟 好奇心</div>
-                <div class="intent-chip" onclick="setIntent('同理心')">❤️ 同理心</div>
-                <div class="intent-chip" onclick="setIntent('责任感')">🎯 责任感</div>
-                <div class="intent-chip" onclick="setIntent('多元尊重')">🌈 多元尊重</div>
-                <div class="intent-chip" onclick="setIntent('环保意识')">🌱 环保意识</div>
+            <div class="card-title">🎛️ 家长教养旋钮</div>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('knobs-tab')">策略参数</button>
+                <button class="tab" onclick="showTab('values-tab')">价值观权重</button>
+                <button class="tab" onclick="showTab('dashboard-tab')">系统仪表盘</button>
             </div>
-            <div style="margin-top: 16px;">
+            
+            <div id="knobs-tab" class="tab-content active">
+                <div class="knobs-grid">
+                    <div class="knob-section">
+                        <div class="knob-title">冒险系数</div>
+                        <div class="knob-row">
+                            <div class="knob-label"><span>保守</span><span>冒险</span></div>
+                            <input type="range" class="knob-slider" id="riskSlider" min="0" max="100" value="50" oninput="updateKnob('risk_tolerance', this.value)">
+                            <div style="text-align: center; margin-top: 6px; font-size: 0.9em; color: #667eea;" id="riskValue">50%</div>
+                        </div>
+                        <p style="font-size: 0.85em; color: #666;">允许系统推荐超出ZPD上限内容的频率</p>
+                    </div>
+                    <div class="knob-section">
+                        <div class="knob-title">多样性倾向</div>
+                        <div class="knob-row">
+                            <div class="knob-label"><span>深度纵向</span><span>广度横向</span></div>
+                            <input type="range" class="knob-slider" id="diversitySlider" min="0" max="100" value="50" oninput="updateKnob('diversity_preference', this.value)">
+                            <div style="text-align: center; margin-top: 6px; font-size: 0.9em; color: #667eea;" id="diversityValue">50%</div>
+                        </div>
+                        <p style="font-size: 0.85em; color: #666;">偏好专注单一主题深挖，还是跨领域广泛探索</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="values-tab" class="tab-content">
+                <div class="value-chips">
+                    <div class="value-chip" onclick="toggleValue('好奇心')">🌟 好奇心</div>
+                    <div class="value-chip" onclick="toggleValue('同理心')">❤️ 同理心</div>
+                    <div class="value-chip" onclick="toggleValue('责任感')">🎯 责任感</div>
+                    <div class="value-chip" onclick="toggleValue('多元尊重')">🌈 多元尊重</div>
+                    <div class="value-chip" onclick="toggleValue('环保意识')">🌱 环保意识</div>
+                </div>
+                <p style="margin-top: 12px; font-size: 0.9em; color: #666;">点击选择当前阶段重点培育的价值观（可多选）</p>
+            </div>
+            
+            <div id="dashboard-tab" class="tab-content">
+                <div class="dashboard-grid" id="dashboardGrid"></div>
+            </div>
+            
+            <div style="margin-top: 20px; display: flex; gap: 12px;">
                 <button class="btn btn-secondary" onclick="showParentReport()">📋 查看扶光周报</button>
+                <button class="btn btn-primary" onclick="applyKnobs()">✓ 应用设置</button>
             </div>
         </div>
         
         <!-- Recommendations -->
         <div class="card" id="recommendCard" style="display: none;">
-            <div class="card-title">🎬 为你推荐</div>
+            <div class="card-title">🎬 为你推荐 <span style="font-size: 0.8em; color: #666; font-weight: normal;">(点击按钮记录行为)</span></div>
             <div class="video-grid" id="videoGrid"></div>
         </div>
         
@@ -483,92 +231,86 @@
     </div>
     
     <script>
-        // ========== ML-Enhanced Recommender Engine ==========
+        // ========== Enhanced Recommender Engine ==========
         
-        class ScaffoldingMLRecommender {
+        class EnhancedRecommender {
             constructor() {
                 this.user = null;
                 this.contentLibrary = {};
                 this.watchHistory = [];
-                this.valueExposure = {
-                    '好奇心': 0.5, '同理心': 0.5, '责任感': 0.5,
-                    '多元尊重': 0.5, '环保意识': 0.5
-                };
+                this.valueExposure = { '好奇心': 0.5, '同理心': 0.5, '责任感': 0.5, '多元尊重': 0.5, '环保意识': 0.5 };
                 this.topicDistribution = {};
                 this.naturalEndBonus = 0;
-                this.parentIntent = [];
+                this.parentKnobs = { risk_tolerance: 0.5, diversity_preference: 0.5, value_focus: {} };
                 this.initialized = false;
+                
+                // 成长性指标
+                this.zpdVelocity = 0.0;
+                this.toolAppropriation = 0.0;
+                this.curiositySpark = 0;
+                this.currentZpdLow = 1;
+                this.currentZpdHigh = 3;
+                this.spontaneousExplorations = 0;
+                
+                // Contextual Bandit
+                this.armStats = [{ expected: 0.25 }, { expected: 0.25 }, { expected: 0.25 }, { expected: 0.25 }];
+                this.armStrategies = ['exploitation', 'diversity', 'scaffolding', 'exploration'];
                 
                 this.initContentLibrary();
             }
             
             initContentLibrary() {
-                // Expanded content library with 40+ items
                 const contents = [
-                    // Toys (L1)
-                    { id: 'v001', title: '超级飞侠乐迪豪华玩具拆箱', category: '玩具开箱', complexity: 'L1', emoji: '📦', values: { curiosity: 0.4, empathy: 0.3, responsibility: 0.6, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v002', title: '汪汪队阿奇警车拆解', category: '玩具开箱', complexity: 'L1', emoji: '🚔', values: { curiosity: 0.5, empathy: 0.4, responsibility: 0.7, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v003', title: '汪汪队总部基地开箱', category: '玩具开箱', complexity: 'L1', emoji: '🏢', values: { curiosity: 0.4, empathy: 0.5, responsibility: 0.6, diversity: 0.3, environment: 0.1 } },
-                    { id: 'v011', title: '奥特曼变身器大集合', category: '玩具开箱', complexity: 'L1', emoji: '⚡', values: { curiosity: 0.3, empathy: 0.2, responsibility: 0.8, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v012', title: '叶罗丽华丽卡片开箱', category: '玩具开箱', complexity: 'L1', emoji: '✨', values: { curiosity: 0.3, empathy: 0.6, responsibility: 0.3, diversity: 0.4, environment: 0.1 } },
+                    { id: 'v001', title: '超级飞侠乐迪豪华玩具拆箱', category: '玩具开箱', complexity: 'L1', emoji: '📦', values: { curiosity: 0.4, empathy: 0.3, responsibility: 0.6, diversity: 0.2, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v002', title: '汪汪队阿奇警车拆解', category: '玩具开箱', complexity: 'L1', emoji: '🚔', values: { curiosity: 0.5, empathy: 0.4, responsibility: 0.7, diversity: 0.2, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: ['合作'] },
+                    { id: 'v003', title: '汪汪队总部基地开箱', category: '玩具开箱', complexity: 'L1', emoji: '🏢', values: { curiosity: 0.4, empathy: 0.5, responsibility: 0.6, diversity: 0.3, environment: 0.1 }, cognitive: ['角色代入'], emotional: '温暖', social: ['合作'] },
+                    { id: 'v011', title: '奥特曼变身器大集合', category: '玩具开箱', complexity: 'L1', emoji: '⚡', values: { curiosity: 0.3, empathy: 0.2, responsibility: 0.8, diversity: 0.2, environment: 0.1 }, cognitive: ['角色代入'], emotional: '勇气', social: ['坚韧'] },
+                    { id: 'v012', title: '叶罗丽华丽卡片开箱', category: '玩具开箱', complexity: 'L1', emoji: '✨', values: { curiosity: 0.3, empathy: 0.6, responsibility: 0.3, diversity: 0.4, environment: 0.1 }, cognitive: ['角色代入'], emotional: '温暖', social: ['尊重差异'] },
                     
-                    // Funny Pets (L1)
-                    { id: 'v021', title: '猫咪搞笑合集第45弹', category: '搞笑宠物', complexity: 'L1', emoji: '🐱', values: { curiosity: 0.3, empathy: 0.5, responsibility: 0.1, diversity: 0.1, environment: 0.1 } },
-                    { id: 'v022', title: '二哈拆家名场面', category: '搞笑宠物', complexity: 'L1', emoji: '🐕', values: { curiosity: 0.3, empathy: 0.4, responsibility: 0.1, diversity: 0.1, environment: 0.1 } },
-                    { id: 'v023', title: '仓鼠滚轮大赛', category: '搞笑宠物', complexity: 'L1', emoji: '🐹', values: { curiosity: 0.5, empathy: 0.3, responsibility: 0.1, diversity: 0.1, environment: 0.2 } },
+                    { id: 'v021', title: '猫咪搞笑合集', category: '搞笑宠物', complexity: 'L1', emoji: '🐱', values: { curiosity: 0.3, empathy: 0.5, responsibility: 0.1, diversity: 0.1, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v022', title: '二哈拆家名场面', category: '搞笑宠物', complexity: 'L1', emoji: '🐕', values: { curiosity: 0.3, empathy: 0.4, responsibility: 0.1, diversity: 0.1, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v023', title: '仓鼠滚轮大赛', category: '搞笑宠物', complexity: 'L1', emoji: '🐹', values: { curiosity: 0.5, empathy: 0.3, responsibility: 0.1, diversity: 0.1, environment: 0.2 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
                     
-                    // Toy Dissection (L2)
-                    { id: 'v031', title: '乐迪玩具里面有什么？拆开看看！', category: '玩具拆解', complexity: 'L2', emoji: '🔧', values: { curiosity: 0.7, empathy: 0.3, responsibility: 0.3, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v032', title: '遥控汽车电机大揭秘', category: '玩具拆解', complexity: 'L2', emoji: '🚗', values: { curiosity: 0.8, empathy: 0.2, responsibility: 0.3, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v033', title: '智能机器人拆解教程', category: '玩具拆解', complexity: 'L2', emoji: '🤖', values: { curiosity: 0.8, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.2 } },
+                    { id: 'v031', title: '乐迪玩具里面有什么？拆开看看！', category: '玩具拆解', complexity: 'L2', emoji: '🔧', values: { curiosity: 0.7, empathy: 0.3, responsibility: 0.3, diversity: 0.2, environment: 0.1 }, cognitive: ['因果推理', '多视角比较'], emotional: '好奇', social: [] },
+                    { id: 'v032', title: '遥控汽车电机大揭秘', category: '玩具拆解', complexity: 'L2', emoji: '🚗', values: { curiosity: 0.8, empathy: 0.2, responsibility: 0.3, diversity: 0.2, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v033', title: '智能机器人拆解教程', category: '玩具拆解', complexity: 'L2', emoji: '🤖', values: { curiosity: 0.8, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.2 }, cognitive: ['因果推理', '多视角比较'], emotional: '好奇', social: ['合作'] },
                     
-                    // Simple Machines (L2-L3)
-                    { id: 'v041', title: '玩具车是怎么跑起来的？', category: '简单机械', complexity: 'L2', emoji: '⚙️', values: { curiosity: 0.8, empathy: 0.3, responsibility: 0.3, diversity: 0.2, environment: 0.1 } },
-                    { id: 'v042', title: '滑滑梯为什么这么快？', category: '简单机械', complexity: 'L2', emoji: '🛝', values: { curiosity: 0.75, empathy: 0.4, responsibility: 0.2, diversity: 0.3, environment: 0.2 } },
-                    { id: 'v043', title: '跷跷板为什么一边高一边低？', category: '简单机械', complexity: 'L3', emoji: '⚖️', values: { curiosity: 0.8, empathy: 0.5, responsibility: 0.3, diversity: 0.3, environment: 0.2 } },
-                    { id: 'v044', title: '自行车齿轮传动原理', category: '简单机械', complexity: 'L3', emoji: '🚲', values: { curiosity: 0.85, empathy: 0.3, responsibility: 0.4, diversity: 0.2, environment: 0.3 } },
+                    { id: 'v041', title: '玩具车是怎么跑起来的？', category: '简单机械', complexity: 'L2', emoji: '⚙️', values: { curiosity: 0.8, empathy: 0.3, responsibility: 0.3, diversity: 0.2, environment: 0.1 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v042', title: '滑滑梯为什么这么快？', category: '简单机械', complexity: 'L2', emoji: '🛝', values: { curiosity: 0.75, empathy: 0.4, responsibility: 0.2, diversity: 0.3, environment: 0.2 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v043', title: '跷跷板为什么一边高一边低？', category: '简单机械', complexity: 'L3', emoji: '⚖️', values: { curiosity: 0.8, empathy: 0.5, responsibility: 0.3, diversity: 0.3, environment: 0.2 }, cognitive: ['因果推理', '多视角比较'], emotional: '好奇', social: ['公平'] },
+                    { id: 'v044', title: '自行车齿轮传动原理', category: '简单机械', complexity: 'L3', emoji: '🚲', values: { curiosity: 0.85, empathy: 0.3, responsibility: 0.4, diversity: 0.2, environment: 0.3 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
                     
-                    // Hydraulic (L4)
-                    { id: 'v051', title: '挖掘机的大铲子是怎么动的？', category: '液压机械', complexity: 'L4', emoji: '🚜', values: { curiosity: 0.9, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.3 } },
-                    { id: 'v052', title: '小哥白尼液压机械臂DIY', category: '液压机械', complexity: 'L4', emoji: '🦾', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.7, diversity: 0.3, environment: 0.2 } },
-                    { id: 'v053', title: '液压千斤顶原理演示', category: '液压机械', complexity: 'L4', emoji: '🆙', values: { curiosity: 0.85, empathy: 0.2, responsibility: 0.5, diversity: 0.2, environment: 0.2 } },
-                    { id: 'v054', title: '注射器水枪发射器制作', category: '液压机械', complexity: 'L4', emoji: '💉', values: { curiosity: 0.9, empathy: 0.3, responsibility: 0.5, diversity: 0.2, environment: 0.2 } },
+                    { id: 'v051', title: '挖掘机的大铲子是怎么动的？', category: '液压机械', complexity: 'L4', emoji: '🚜', values: { curiosity: 0.9, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.3 }, cognitive: ['因果推理', '角色代入'], emotional: '好奇', social: [] },
+                    { id: 'v052', title: '小哥白尼液压机械臂DIY', category: '液压机械', complexity: 'L4', emoji: '🦾', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.7, diversity: 0.3, environment: 0.2 }, cognitive: ['因果推理', '多视角比较', '角色代入'], emotional: '勇气', social: ['合作', '坚韧'] },
+                    { id: 'v053', title: '液压千斤顶原理演示', category: '液压机械', complexity: 'L4', emoji: '🆙', values: { curiosity: 0.85, empathy: 0.2, responsibility: 0.5, diversity: 0.2, environment: 0.2 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v054', title: '注射器水枪发射器制作', category: '液压机械', complexity: 'L4', emoji: '💉', values: { curiosity: 0.9, empathy: 0.3, responsibility: 0.5, diversity: 0.2, environment: 0.2 }, cognitive: ['因果推理'], emotional: '适度挫败', social: ['合作'] },
                     
-                    // Science (L2-L3)
-                    { id: 'v061', title: '彩虹牛奶：颜色是怎么跳舞的', category: '科学实验', complexity: 'L2', emoji: '🌈', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.3, diversity: 0.3, environment: 0.2 } },
-                    { id: 'v062', title: '火山喷发大冒险', category: '科学实验', complexity: 'L3', emoji: '🌋', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.3, diversity: 0.3, environment: 0.3 } },
-                    { id: 'v063', title: '自制冰激淋火山', category: '科学实验', complexity: 'L2', emoji: '🍦', values: { curiosity: 0.9, empathy: 0.4, responsibility: 0.3, diversity: 0.3, environment: 0.3 } },
-                    { id: 'v064', title: '静电魔力：气球吸纸片', category: '科学实验', complexity: 'L2', emoji: '🎈', values: { curiosity: 0.85, empathy: 0.3, responsibility: 0.2, diversity: 0.2, environment: 0.2 } },
+                    { id: 'v061', title: '彩虹牛奶：颜色是怎么跳舞的', category: '科学实验', complexity: 'L2', emoji: '🌈', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.3, diversity: 0.3, environment: 0.2 }, cognitive: ['因果推理'], emotional: '好奇', social: [] },
+                    { id: 'v062', title: '火山喷发大冒险', category: '科学实验', complexity: 'L3', emoji: '🌋', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.3, diversity: 0.3, environment: 0.3 }, cognitive: ['因果推理', '价值两难判断'], emotional: '适度挫败', social: [] },
+                    { id: 'v063', title: '自制冰激淋火山', category: '科学实验', complexity: 'L2', emoji: '🍦', values: { curiosity: 0.9, empathy: 0.4, responsibility: 0.3, diversity: 0.3, environment: 0.3 }, cognitive: ['因果推理'], emotional: '好奇', social: ['合作'] },
                     
-                    // Nature (L2-L3)
-                    { id: 'v071', title: '非洲草原的大象家族', category: '自然动物', complexity: 'L2', emoji: '🐘', values: { curiosity: 0.8, empathy: 0.7, responsibility: 0.5, diversity: 0.7, environment: 0.9 } },
-                    { id: 'v072', title: '蚂蚁工坊观察日记', category: '自然动物', complexity: 'L2', emoji: '🐜', values: { curiosity: 0.9, empathy: 0.5, responsibility: 0.4, diversity: 0.4, environment: 0.8 } },
-                    { id: 'v073', title: '深海鱼类的神奇世界', category: '自然动物', complexity: 'L3', emoji: '🐟', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.5, diversity: 0.6, environment: 0.9 } },
+                    { id: 'v071', title: '非洲草原的大象家族', category: '自然动物', complexity: 'L2', emoji: '🐘', values: { curiosity: 0.8, empathy: 0.7, responsibility: 0.5, diversity: 0.7, environment: 0.9 }, cognitive: ['角色代入', '多视角比较'], emotional: '温暖', social: ['尊重差异'] },
+                    { id: 'v072', title: '蚂蚁工坊观察日记', category: '自然动物', complexity: 'L2', emoji: '🐜', values: { curiosity: 0.9, empathy: 0.5, responsibility: 0.4, diversity: 0.4, environment: 0.8 }, cognitive: ['因果推理'], emotional: '好奇', social: ['合作'] },
+                    { id: 'v073', title: '深海鱼类的神奇世界', category: '自然动物', complexity: 'L3', emoji: '🐟', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.5, diversity: 0.6, environment: 0.9 }, cognitive: ['多视角比较', '价值两难判断'], emotional: '好奇', social: ['尊重差异'] },
                     
-                    // Art & Craft (L2-L3)
-                    { id: 'v081', title: '超简单纸飞机折叠大全', category: '手工艺术', complexity: 'L2', emoji: '✈️', values: { curiosity: 0.7, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.3 } },
-                    { id: 'v082', title: '非洲鼓点节奏入门', category: '手工艺术', complexity: 'L2', emoji: '🥁', values: { curiosity: 0.6, empathy: 0.7, responsibility: 0.3, diversity: 0.9, environment: 0.2 } },
-                    { id: 'v083', title: '水彩画夕阳教程', category: '手工艺术', complexity: 'L2', emoji: '🎨', values: { curiosity: 0.6, empathy: 0.5, responsibility: 0.4, diversity: 0.4, environment: 0.3 } },
+                    { id: 'v081', title: '超简单纸飞机折叠大全', category: '手工艺术', complexity: 'L2', emoji: '✈️', values: { curiosity: 0.7, empathy: 0.3, responsibility: 0.4, diversity: 0.3, environment: 0.3 }, cognitive: ['因果推理'], emotional: '勇气', social: [] },
+                    { id: 'v082', title: '非洲鼓点节奏入门', category: '手工艺术', complexity: 'L2', emoji: '🥁', values: { curiosity: 0.6, empathy: 0.7, responsibility: 0.3, diversity: 0.9, environment: 0.2 }, cognitive: ['多视角比较'], emotional: '温暖', social: ['合作', '尊重差异'] },
+                    { id: 'v083', title: '水彩画夕阳教程', category: '手工艺术', complexity: 'L2', emoji: '🎨', values: { curiosity: 0.6, empathy: 0.5, responsibility: 0.4, diversity: 0.4, environment: 0.3 }, cognitive: ['角色代入'], emotional: '平静', social: [] },
                     
-                    // Friendship (L2-L3)
-                    { id: 'v091', title: '小猪佩奇：友情大考验', category: '友谊情感', complexity: 'L2', emoji: '🐷', values: { curiosity: 0.4, empathy: 0.9, responsibility: 0.6, diversity: 0.5, environment: 0.2 } },
-                    { id: 'v092', title: '如何成为更好的朋友？', category: '友谊情感', complexity: 'L3', emoji: '🤝', values: { curiosity: 0.4, empathy: 0.95, responsibility: 0.7, diversity: 0.6, environment: 0.2 } },
-                    { id: 'v093', title: '分享的快乐', category: '友谊情感', complexity: 'L2', emoji: '🎁', values: { curiosity: 0.3, empathy: 0.9, responsibility: 0.7, diversity: 0.5, environment: 0.2 } },
+                    { id: 'v091', title: '小猪佩奇：友情大考验', category: '友谊情感', complexity: 'L2', emoji: '🐷', values: { curiosity: 0.4, empathy: 0.9, responsibility: 0.6, diversity: 0.5, environment: 0.2 }, cognitive: ['角色代入', '价值两难判断'], emotional: '温暖', social: ['合作', '公平'] },
+                    { id: 'v092', title: '如何成为更好的朋友？', category: '友谊情感', complexity: 'L3', emoji: '🤝', values: { curiosity: 0.4, empathy: 0.95, responsibility: 0.7, diversity: 0.6, environment: 0.2 }, cognitive: ['角色代入', '多视角比较', '价值两难判断'], emotional: '温暖', social: ['合作', '尊重差异'] },
+                    { id: 'v093', title: '分享的快乐', category: '友谊情感', complexity: 'L2', emoji: '🎁', values: { curiosity: 0.3, empathy: 0.9, responsibility: 0.7, diversity: 0.5, environment: 0.2 }, cognitive: ['角色代入'], emotional: '温暖', social: ['合作', '公平'] },
                     
-                    // Character Building (L3-L4)
-                    { id: 'v101', title: '勇气魔法：克服恐惧', category: '品格教育', complexity: 'L3', emoji: '🦁', values: { curiosity: 0.5, empathy: 0.6, responsibility: 0.8, diversity: 0.4, environment: 0.2 } },
-                    { id: 'v102', title: '责任感的魔法', category: '品格教育', complexity: 'L3', emoji: '⭐', values: { curiosity: 0.4, empathy: 0.6, responsibility: 0.95, diversity: 0.4, environment: 0.2 } },
-                    { id: 'v103', title: '坚持的力量', category: '品格教育', complexity: 'L3', emoji: '💪', values: { curiosity: 0.5, empathy: 0.5, responsibility: 0.9, diversity: 0.3, environment: 0.2 } },
+                    { id: 'v101', title: '勇气魔法：克服恐惧', category: '品格教育', complexity: 'L3', emoji: '🦁', values: { curiosity: 0.5, empathy: 0.6, responsibility: 0.8, diversity: 0.4, environment: 0.2 }, cognitive: ['角色代入', '价值两难判断'], emotional: '勇气', social: ['坚韧'] },
+                    { id: 'v102', title: '责任感的魔法', category: '品格教育', complexity: 'L3', emoji: '⭐', values: { curiosity: 0.4, empathy: 0.6, responsibility: 0.95, diversity: 0.4, environment: 0.2 }, cognitive: ['角色代入', '价值两难判断'], emotional: '温暖', social: ['责任', '公平'] },
+                    { id: 'v103', title: '坚持的力量', category: '品格教育', complexity: 'L3', emoji: '💪', values: { curiosity: 0.5, empathy: 0.5, responsibility: 0.9, diversity: 0.3, environment: 0.2 }, cognitive: ['角色代入'], emotional: '勇气', social: ['坚韧'] },
                     
-                    // Environment (L3-L4)
-                    { id: 'v111', title: '海洋塑料污染：我们可以做什么？', category: '环保意识', complexity: 'L3', emoji: '🌊', values: { curiosity: 0.7, empathy: 0.8, responsibility: 0.9, diversity: 0.5, environment: 0.95 } },
-                    { id: 'v112', title: '垃圾分类小知识', category: '环保意识', complexity: 'L2', emoji: '♻️', values: { curiosity: 0.6, empathy: 0.5, responsibility: 0.9, diversity: 0.4, environment: 0.9 } },
-                    { id: 'v113', title: '森林防火的重要性', category: '环保意识', complexity: 'L3', emoji: '🔥', values: { curiosity: 0.6, empathy: 0.6, responsibility: 0.8, diversity: 0.4, environment: 0.9 } },
+                    { id: 'v111', title: '海洋塑料污染：我们可以做什么？', category: '环保意识', complexity: 'L3', emoji: '🌊', values: { curiosity: 0.7, empathy: 0.8, responsibility: 0.9, diversity: 0.5, environment: 0.95 }, cognitive: ['多视角比较', '价值两难判断'], emotional: '平静', social: ['公平', '尊重差异'] },
+                    { id: 'v112', title: '垃圾分类小知识', category: '环保意识', complexity: 'L2', emoji: '♻️', values: { curiosity: 0.6, empathy: 0.5, responsibility: 0.9, diversity: 0.4, environment: 0.9 }, cognitive: ['因果推理'], emotional: '平静', social: ['责任'] },
+                    { id: 'v113', title: '森林防火的重要性', category: '环保意识', complexity: 'L3', emoji: '🔥', values: { curiosity: 0.6, empathy: 0.6, responsibility: 0.8, diversity: 0.4, environment: 0.9 }, cognitive: ['因果推理', '价值两难判断'], emotional: '平静', social: ['责任', '公平'] },
                     
-                    // Advanced (L5-L6)
-                    { id: 'v121', title: '仿生机器人设计', category: '进阶科技', complexity: 'L5', emoji: '🦾', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.5, diversity: 0.6, environment: 0.6 } },
-                    { id: 'v122', title: '人工智能如何学习', category: '进阶科技', complexity: 'L6', emoji: '🧠', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.5, diversity: 0.5, environment: 0.4 } },
-                    { id: 'v123', title: '量子物理入门', category: '进阶科技', complexity: 'L6', emoji: '⚛️', values: { curiosity: 0.98, empathy: 0.2, responsibility: 0.4, diversity: 0.4, environment: 0.3 } },
+                    { id: 'v121', title: '仿生机器人设计', category: '进阶科技', complexity: 'L5', emoji: '🦾', values: { curiosity: 0.95, empathy: 0.4, responsibility: 0.5, diversity: 0.6, environment: 0.6 }, cognitive: ['因果推理', '多视角比较', '角色代入'], emotional: '好奇', social: ['合作'] },
+                    { id: 'v122', title: '人工智能如何学习', category: '进阶科技', complexity: 'L6', emoji: '🧠', values: { curiosity: 0.95, empathy: 0.3, responsibility: 0.5, diversity: 0.5, environment: 0.4 }, cognitive: ['因果推理', '多视角比较'], emotional: '好奇', social: [] },
                 ];
                 
                 contents.forEach(c => this.contentLibrary[c.id] = c);
@@ -580,19 +322,24 @@
                 this.valueExposure = { curiosity: 0.5, empathy: 0.5, responsibility: 0.5, diversity: 0.5, environment: 0.5 };
                 this.topicDistribution = {};
                 this.naturalEndBonus = 0;
-                this.parentIntent = [];
+                this.parentKnobs = { risk_tolerance: 0.5, diversity_preference: 0.5, value_focus: {} };
                 this.initialized = true;
                 
-                // Simulate some initial history for better recommendations
+                // 重置成长指标
+                this.zpdVelocity = 0.0;
+                this.toolAppropriation = 0.0;
+                this.curiositySpark = 0;
+                this.currentZpdLow = 1;
+                this.currentZpdHigh = 3;
+                this.spontaneousExplorations = 0;
+                
                 this.simulateInitialHistory();
             }
             
             simulateInitialHistory() {
-                // Start user with typical interests
-                const initialVideos = ['v001', 'v021', 'v022']; // toys and funny pets
-                initialVideos.forEach(vid => {
+                ['v001', 'v021', 'v022'].forEach(vid => {
                     const video = this.contentLibrary[vid];
-                    this.recordWatch(vid, 'watch');
+                    if (video) this.recordWatch(vid, 'watch');
                 });
             }
             
@@ -601,28 +348,32 @@
                 if (!video) return;
                 
                 this.watchHistory.push({ videoId, action, timestamp: Date.now() });
-                
-                // Update topic distribution
                 this.topicDistribution[video.category] = (this.topicDistribution[video.category] || 0) + 1;
                 
-                // Update value exposure (Bayesian-like update)
                 Object.keys(video.values).forEach(key => {
                     const prior = this.valueExposure[key] || 0.5;
                     this.valueExposure[key] = 0.7 * prior + 0.3 * video.values[key];
                 });
                 
-                // Update natural end bonus
                 if (action === 'natural_end') {
                     this.naturalEndBonus = Math.min(1, this.naturalEndBonus + 0.1);
-                } else if (action === 'auto_next') {
-                    this.naturalEndBonus = Math.max(0, this.naturalEndBonus - 0.05);
+                    
+                    // 更新ZPD Velocity
+                    const complexity = parseInt(video.complexity.replace('L', ''));
+                    if (complexity >= this.currentZpdHigh) {
+                        this.zpdVelocity = Math.min(1, this.zpdVelocity + 0.08);
+                        if (complexity > this.currentZpdHigh) {
+                            this.currentZpdHigh = Math.min(6, complexity + 1);
+                        }
+                    }
+                } else if (action === 'skip') {
+                    this.zpdVelocity = Math.max(0, this.zpdVelocity - 0.03);
                 }
             }
             
             computeDiversityEntropy() {
                 const total = Object.values(this.topicDistribution).reduce((a, b) => a + b, 0);
                 if (total === 0) return 0;
-                
                 let entropy = 0;
                 Object.values(this.topicDistribution).forEach(count => {
                     const p = count / total;
@@ -632,197 +383,190 @@
             }
             
             computeBubbleRisk() {
-                const entropy = this.computeDiversityEntropy();
-                const maxEntropy = Math.log2(Object.keys(this.topicDistribution).length || 1);
-                return Math.max(0, (2 - entropy) / 2);
+                return Math.max(0, (2 - this.computeDiversityEntropy()) / 2);
             }
             
-            // ========== ML: Content-Based Filtering with Similarity ==========
-            computeSimilarity(videoA, videoB) {
-                // Cosine similarity on value vectors
-                let dotProduct = 0, normA = 0, normB = 0;
-                Object.keys(videoA.values).forEach(key => {
-                    dotProduct += videoA.values[key] * videoB.values[key];
-                    normA += videoA.values[key] ** 2;
-                    normB += videoB.values[key] ** 2;
-                });
-                return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB) + 0.0001);
+            // Contextual Bandit arm selection
+            selectArm() {
+                // Thompson Sampling (simplified)
+                const samples = this.armStats.map(a => a.expected + (Math.random() - 0.5) * 0.2);
+                const bubbleRisk = this.computeBubbleRisk();
+                const contextBonus = [
+                    0,
+                    bubbleRisk * 0.5,
+                    this.zpdVelocity * 0.3,
+                    0.1
+                ];
+                const scores = samples.map((s, i) => s + contextBonus[i]);
+                return scores.indexOf(Math.max(...scores));
             }
             
-            // ========== ML: Collaborative Filtering (User-Based) ==========
-            findSimilarUsers() {
-                // In a real system, this would query a user-item matrix
-                // Here we simulate by finding users with similar watch patterns
-                return this.watchHistory.map(h => h.videoId);
+            updateArm(arm, reward) {
+                this.armStats[arm].expected = this.armStats[arm].expected * 0.9 + reward * 0.1;
             }
             
-            // ========== ML: Learning to Rank (Simplified) ==========
-            computeMLScore(video) {
+            getRecommendations(count = 8) {
+                const arm = this.selectArm();
+                const strategy = this.armStrategies[arm];
+                
+                const candidates = Object.values(this.contentLibrary)
+                    .filter(v => !this.watchHistory.some(h => h.videoId === v.id));
+                
+                let selected = [];
+                
+                if (strategy === 'diversity') {
+                    const watchedCats = Object.keys(this.topicDistribution);
+                    selected = candidates.filter(v => !watchedCats.includes(v.category));
+                    if (selected.length < count) selected = candidates;
+                } else if (strategy === 'scaffolding') {
+                    selected = candidates.filter(v => {
+                        const lvl = parseInt(v.complexity.replace('L', ''));
+                        return lvl <= this.currentZpdHigh;
+                    });
+                    if (selected.length < count) selected = candidates;
+                } else {
+                    selected = candidates;
+                }
+                
+                const scored = selected.map(video => ({
+                    ...video,
+                    mlScore: this.computeScore(video, arm),
+                    reason: this.generateReason(video, strategy),
+                    strategy: strategy
+                }));
+                
+                scored.sort((a, b) => b.mlScore - a.mlScore);
+                return scored.slice(0, count);
+            }
+            
+            computeScore(video, arm) {
                 let score = 0;
                 
-                // Factor 1: Content Quality (pleasure A)
+                // Quality
                 const avgValue = Object.values(video.values).reduce((a, b) => a + b) / 5;
-                score += 0.25 * avgValue;
+                score += 0.2 * avgValue;
                 
-                // Factor 2: Bubble Penalty (B)
-                const bubbleRisk = this.computeBubbleRisk();
-                const watchedCategories = Object.keys(this.topicDistribution);
-                const isNewCategory = !watchedCategories.includes(video.category);
-                score -= 0.25 * bubbleRisk * (isNewCategory ? 0 : 1);
-                
-                // Factor 3: Value Potential (C) - based on parent intent
-                if (this.parentIntent.length > 0) {
-                    let intentScore = 0;
-                    this.parentIntent.forEach(intent => {
-                        const key = intent.toLowerCase();
-                        if (video.values[key] !== undefined) {
-                            intentScore += video.values[key];
+                // Value alignment with parent knobs
+                const focusKeys = Object.keys(this.parentKnobs.value_focus);
+                if (focusKeys.length > 0) {
+                    let focusScore = 0;
+                    focusKeys.forEach(key => {
+                        const keyLower = key.toLowerCase();
+                        if (video.values[keyLower] !== undefined) {
+                            focusScore += video.values[keyLower];
                         }
                     });
-                    score += 0.30 * (intentScore / this.parentIntent.length);
+                    score += 0.3 * (focusScore / focusKeys.length);
                 } else {
                     score += 0.25 * avgValue;
                 }
                 
-                // Factor 4: Natural End Encouragement (D)
-                score += 0.15 * this.naturalEndBonus;
+                // ZPD adjustment
+                const complexity = parseInt(video.complexity.replace('L', ''));
+                if (complexity > this.currentZpdHigh) {
+                    score *= (1 - this.parentKnobs.risk_tolerance * 0.5);
+                }
                 
-                // Factor 5: Exploration Bonus - ML-based diversity
-                score += 0.15 * (isNewCategory ? 0.3 : 0) * (1 - bubbleRisk);
-                
-                // Factor 6: Scaffolding proximity bonus (guided learning path)
-                const lastWatched = this.watchHistory[this.watchHistory.length - 1];
-                if (lastWatched) {
-                    const lastVideo = this.contentLibrary[lastWatched.videoId];
-                    const complexityOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
-                    const lastLevel = complexityOrder.indexOf(lastVideo.complexity);
-                    const thisLevel = complexityOrder.indexOf(video.complexity);
-                    
-                    // Slight boost for progressing complexity (within 2 levels)
-                    if (thisLevel > lastLevel && thisLevel - lastLevel <= 2) {
-                        score += 0.1;
+                // Diversity preference
+                if (this.parentKnobs.diversity_preference > 0.6) {
+                    if (!this.topicDistribution[video.category]) {
+                        score += 0.15;
                     }
                 }
                 
-                // Factor 7: Personalized recommendation (ML model)
-                // Simulate a "like" prediction based on content similarity
-                const watchedVideos = this.watchHistory.map(h => this.contentLibrary[h.videoId]);
-                if (watchedVideos.length > 0) {
-                    const avgSimilarity = watchedVideos.reduce((sum, wv) => 
-                        sum + this.computeSimilarity(wv, video), 0) / watchedVideos.length;
-                    score += 0.1 * avgSimilarity;
+                // Natural end bonus
+                score += 0.15 * this.naturalEndBonus;
+                
+                // Arm-specific bonuses
+                if (arm === 1 && this.computeBubbleRisk() > 0.3) {
+                    score += 0.2;
+                }
+                if (arm === 2) {
+                    if (this.currentZpdLow <= complexity && complexity <= this.currentZpdHigh) {
+                        score += 0.15;
+                    }
                 }
                 
                 return Math.min(1, Math.max(0, score));
             }
             
-            getRecommendations(count = 8) {
-                const candidates = Object.values(this.contentLibrary)
-                    .filter(v => !this.watchHistory.some(h => h.videoId === v.id));
+            generateReason(video, strategy) {
+                const reasons = {
+                    exploitation: `因为你之前对「${video.category}」感兴趣`,
+                    diversity: `发现新领域！你可能对「${video.category}」好奇`,
+                    scaffolding: `这个挑战刚刚好，可以让你更进一步`,
+                    exploration: `扶光觉得这个很有意思，试试看`
+                };
+                let reason = reasons[strategy] || reasons.exploitation;
                 
-                const scored = candidates.map(video => ({
-                    ...video,
-                    mlScore: this.computeMLScore(video),
-                    reason: this.generateReason(video)
-                }));
-                
-                // Sort by ML score
-                scored.sort((a, b) => b.mlScore - a.mlScore);
-                
-                // Apply diversity quota (60% ML ranked, 20% diverse, 10% scaffolding, 10% explore)
-                const mlCount = Math.floor(count * 0.6);
-                const diverseCount = Math.floor(count * 0.2);
-                const scaffoldCount = Math.floor(count * 0.1);
-                
-                const results = [
-                    ...scored.slice(0, mlCount),
-                    ...this.getDiverseRecommendations(scored, mlCount, diverseCount),
-                    ...this.getScaffoldingRecommendations(scored, mlCount + diverseCount, scaffoldCount)
-                ].slice(0, count);
-                
-                return results;
-            }
-            
-            getDiverseRecommendations(scored, skipCount, count) {
-                const watchedCategories = new Set(Object.keys(this.topicDistribution));
-                const diverse = scored.slice(skipCount)
-                    .filter(v => !watchedCategories.has(v.category))
-                    .slice(0, count);
-                return diverse;
-            }
-            
-            getScaffoldingRecommendations(scored, skipCount, count) {
-                const lastWatched = this.watchHistory[this.watchHistory.length - 1];
-                if (!lastWatched) return [];
-                
-                const lastVideo = this.contentLibrary[lastWatched.videoId];
-                const scaffoldCandidates = scored.slice(skipCount)
-                    .filter(v => {
-                        const complexityOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
-                        const lastLevel = complexityOrder.indexOf(lastVideo.complexity);
-                        const thisLevel = complexityOrder.indexOf(v.complexity);
-                        return thisLevel > lastLevel && thisLevel - lastLevel <= 2;
-                    })
-                    .slice(0, count);
-                return scaffoldCandidates;
-            }
-            
-            generateReason(video) {
-                const entropy = this.computeDiversityEntropy();
-                const bubbleRisk = this.computeBubbleRisk();
-                
-                if (bubbleRisk > 0.3) {
-                    return `🌟 发现新领域！你可能对「${video.category}」感兴趣`;
+                const emojiMap = { '好奇': '🔍', '勇气': '💪', '温暖': '❤️', '平静': '🧘', '适度挫败': '😅' };
+                if (video.emotional && emojiMap[video.emotional]) {
+                    reason += ' ' + emojiMap[video.emotional];
                 }
                 
-                if (this.parentIntent.length > 0) {
-                    return `💫 扶光精选：重点培养${this.parentIntent.join('、')}`;
-                }
-                
-                const curiosity = video.values.curiosity || 0;
-                if (curiosity > 0.8) {
-                    return `🔍 好奇心警报！解答「为什么会这样」的问题`;
-                }
-                
-                return `✨ 扶光推荐：${video.title}`;
+                return reason;
             }
             
-            setParentIntent(intents) {
-                this.parentIntent = intents;
+            setParentKnob(key, value) {
+                this.parentKnobs[key] = value;
+            }
+            
+            toggleValueFocus(value) {
+                if (!this.parentKnobs.value_focus) this.parentKnobs.value_focus = {};
+                if (this.parentKnobs.value_focus[value]) {
+                    delete this.parentKnobs.value_focus[value];
+                } else {
+                    this.parentKnobs.value_focus[value] = 1.5;
+                }
             }
             
             getStats() {
-                const entropy = this.computeDiversityEntropy();
-                const totalWatches = this.watchHistory.length;
+                const total = this.watchHistory.length;
                 const naturalEnds = this.watchHistory.filter(h => h.action === 'natural_end').length;
-                const endRate = totalWatches > 0 ? (naturalEnds / totalWatches * 100).toFixed(0) : 0;
-                
-                // Estimate complexity level based on watch history
                 let maxComplexity = 1;
                 this.watchHistory.forEach(h => {
                     const video = this.contentLibrary[h.videoId];
                     if (video) {
-                        const level = parseInt(video.complexity.replace('L', ''));
-                        maxComplexity = Math.max(maxComplexity, level);
+                        maxComplexity = Math.max(maxComplexity, parseInt(video.complexity.replace('L', '')));
                     }
                 });
                 
                 return {
-                    watches: totalWatches,
-                    entropy: entropy.toFixed(2),
-                    endRate: endRate + '%',
+                    watches: total,
+                    entropy: this.computeDiversityEntropy().toFixed(2),
+                    endRate: (naturalEnds / Math.max(1, total) * 100).toFixed(0) + '%',
                     complexity: 'L' + maxComplexity
                 };
             }
             
-            getValueDistribution() {
-                return this.valueExposure;
+            getDashboard() {
+                const total = this.watchHistory.length;
+                const naturalEnds = this.watchHistory.filter(h => h.action === 'natural_end').length;
+                
+                return {
+                    business: {
+                        '推荐次数': total,
+                        '主动结束率': (naturalEnds / Math.max(1, total) * 100).toFixed(1) + '%',
+                        '茧房风险': (this.computeBubbleRisk() * 100).toFixed(1) + '%',
+                        '多样性熵': this.computeDiversityEntropy().toFixed(2)
+                    },
+                    growth: {
+                        'ZPD Velocity': (this.zpdVelocity * 100).toFixed(0) + '%',
+                        'Tool Appropriation': (this.toolAppropriation * 100).toFixed(0) + '%',
+                        'Curiosity Sparks': this.curiositySpark,
+                        '当前ZPD': `L${this.currentZpdLow}-L${this.currentZpdHigh}`
+                    },
+                    bandit: this.armStats.map((a, i) => ({
+                        arm: this.armStrategies[i],
+                        expected: (a.expected * 100).toFixed(1) + '%'
+                    }))
+                };
             }
         }
         
         // ========== Frontend Controller ==========
         
-        let recommender = new ScaffoldingMLRecommender();
+        let recommender = new EnhancedRecommender();
         let currentRecommendations = [];
         let logs = [];
         
@@ -838,8 +582,8 @@
             document.getElementById('logCard').style.display = 'block';
             
             addLog('system', `用户 ${name} (${ageGroup}) 已初始化`);
-            
-            refreshUI();
+            refreshStats();
+            updateDashboard();
             getRecommendations();
         }
         
@@ -856,26 +600,27 @@
             currentRecommendations.forEach((video, idx) => {
                 const card = document.createElement('div');
                 card.className = 'video-card fade-in';
-                card.style.animationDelay = `${idx * 0.1}s`;
+                card.style.animationDelay = `${idx * 0.05}s`;
                 
-                const complexityLabel = video.complexity.replace('L', 'L');
-                const curiosity = Math.round((video.values.curiosity || 0.5) * 100);
+                const tags = [];
+                (video.cognitive || []).forEach(c => tags.push(`<span class="tag tag-cog">${c}</span>`));
+                if (video.emotional) tags.push(`<span class="tag tag-emo">${video.emotional}</span>`);
+                (video.social || []).forEach(s => tags.push(`<span class="tag tag-social">${s}</span>`));
                 
                 card.innerHTML = `
                     <div class="video-thumbnail">${video.emoji}</div>
                     <div class="video-info">
                         <div class="video-title">${video.title}</div>
-                        <div class="video-meta">
-                            <span class="tag tag-complexity">${video.complexity}</span>
-                            <span class="tag tag-value">${video.category}</span>
+                        <div class="tags">
+                            <span class="tag" style="background:#e3f2fd;color:#1976d2;">${video.complexity}</span>
+                            <span class="tag" style="background:#f3e5f5;color:#7b1fa2;">${video.category}</span>
+                            ${tags.join('')}
                         </div>
-                        <div class="video-score">
-                            <div class="score-bar">
-                                <div class="score-fill" style="width: ${video.mlScore * 100}%"></div>
-                            </div>
+                        <div class="score-row">
+                            <div class="score-bar"><div class="score-fill" style="width:${video.mlScore * 100}%"></div></div>
                             <span class="score-value">${(video.mlScore * 100).toFixed(0)}</span>
                         </div>
-                        <div class="video-reason">${video.reason}</div>
+                        <div class="reason">${video.reason}<span class="strategy-badge">${video.strategy}</span></div>
                         <div class="action-buttons">
                             <button class="action-btn watch" onclick="watchVideo('${video.id}', 'watch')">✅ 观看</button>
                             <button class="action-btn end" onclick="watchVideo('${video.id}', 'natural_end')">🏁 主动结束</button>
@@ -895,11 +640,16 @@
             const actionText = action === 'natural_end' ? '主动结束' : '观看';
             addLog('action', `${actionText}：「${video.title}」`);
             
+            // 更新带宽
+            const arm = recommender.selectArm();
+            recommender.updateArm(arm, action === 'natural_end' ? 1 : 0.5);
+            
             if (action === 'natural_end') {
                 addLog('system', '🎉 扶光：你很有主见地选择看什么！');
             }
             
-            refreshUI();
+            refreshStats();
+            updateDashboard();
             getRecommendations();
         }
         
@@ -909,77 +659,147 @@
             getRecommendations();
         }
         
-        function setIntent(intent) {
-            const chips = document.querySelectorAll('.intent-chip');
-            const index = recommender.parentIntent.indexOf(intent);
+        function updateKnob(key, value) {
+            recommender.setParentKnob(key, value / 100);
             
-            if (index > -1) {
-                recommender.parentIntent.splice(index, 1);
-                chips.forEach(c => {
-                    if (c.textContent.includes(intent)) c.classList.remove('active');
-                });
-            } else {
-                recommender.parentIntent.push(intent);
-                chips.forEach(c => {
-                    if (c.textContent.includes(intent)) c.classList.add('active');
-                });
+            if (key === 'risk_tolerance') {
+                document.getElementById('riskValue').textContent = value + '%';
+            } else if (key === 'diversity_preference') {
+                document.getElementById('diversityValue').textContent = value + '%';
+            }
+        }
+        
+        function toggleValue(value) {
+            recommender.toggleValueFocus(value);
+            
+            document.querySelectorAll('.value-chip').forEach(chip => {
+                const text = chip.textContent;
+                if (text.includes(value)) {
+                    chip.classList.toggle('active');
+                }
+            });
+            
+            addLog('system', `价值观权重调整：${JSON.stringify(recommender.parentKnobs.value_focus)}`);
+        }
+        
+        function applyKnobs() {
+            addLog('system', '✅ 家长设置已应用');
+            getRecommendations();
+            
+            const feedback = [];
+            if (recommender.parentKnobs.risk_tolerance > 0.7) {
+                feedback.push('扶光会更有冒险精神');
+            } else if (recommender.parentKnobs.risk_tolerance < 0.3) {
+                feedback.push('扶光会保守一些');
+            }
+            if (recommender.parentKnobs.diversity_preference > 0.6) {
+                feedback.push('会带孩子发现更多不同领域');
             }
             
-            addLog('system', `家长培育意向：${recommender.parentIntent.join('、') || '未设置'}`);
-            getRecommendations();
+            if (feedback.length) {
+                alert('扶光：' + feedback.join('，') + '！');
+            }
+        }
+        
+        function refreshStats() {
+            const stats = recommender.getStats();
+            
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${stats.watches}</div>
+                    <div class="stat-label">观看次数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.entropy}</div>
+                    <div class="stat-label">认知多样性熵</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.endRate}</div>
+                    <div class="stat-label">主动结束率</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${stats.complexity}</div>
+                    <div class="stat-label">认知复杂度</div>
+                </div>
+            `;
+            
+            // 更新成长指标
+            document.getElementById('zpdVelocity').textContent = (recommender.zpdVelocity).toFixed(2);
+            document.getElementById('zpdBar').style.width = (recommender.zpdVelocity * 100) + '%';
+            document.getElementById('toolAppro').textContent = (recommender.toolAppropriation).toFixed(2);
+            document.getElementById('toolBar').style.width = (recommender.toolAppropriation * 100) + '%';
+            document.getElementById('curiositySpark').textContent = recommender.curiositySpark;
+            document.getElementById('sparkBar').style.width = Math.min(100, recommender.curiositySpark * 10) + '%';
+            document.getElementById('zpdStatus').textContent = `L${recommender.currentZpdLow}-L${recommender.currentZpdHigh}`;
+        }
+        
+        function updateDashboard() {
+            const dashboard = recommender.getDashboard();
+            const container = document.getElementById('dashboardGrid');
+            
+            let html = '<div class="dash-card"><div class="dash-title">📈 业务指标</div>';
+            for (const [k, v] of Object.entries(dashboard.business)) {
+                html += `<div class="dash-metric"><span class="dash-metric-label">${k}</span><span class="dash-metric-value">${v}</span></div>`;
+            }
+            html += '</div>';
+            
+            html += '<div class="dash-card"><div class="dash-title">🚀 成长指标</div>';
+            for (const [k, v] of Object.entries(dashboard.growth)) {
+                html += `<div class="dash-metric"><span class="dash-metric-label">${k}</span><span class="dash-metric-value good">${v}</span></div>`;
+            }
+            html += '</div>';
+            
+            html += '<div class="dash-card"><div class="dash-title">🎰 Contextual Bandit</div>';
+            for (const arm of dashboard.bandit) {
+                html += `<div class="dash-metric"><span class="dash-metric-label">${arm.arm}</span><span class="dash-metric-value">${arm.expected}</span></div>`;
+            }
+            html += '</div>';
+            
+            container.innerHTML = html;
+        }
+        
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            document.querySelectorAll('.tab').forEach(t => {
+                if (t.textContent.includes(tabId.replace('-tab', ''))) t.classList.add('active');
+            });
+            document.getElementById(tabId).classList.add('active');
         }
         
         function showParentReport() {
             const stats = recommender.getStats();
-            const values = recommender.getValueDistribution();
+            const dashboard = recommender.getDashboard();
             
             let report = `
 📊 扶光周报
 ━━━━━━━━━━━━━━━━━━
-👤 用户：${recommender.user.name}
-📅 日期：${new Date().toLocaleDateString('zh-CN')}
+👤 ${recommender.user.name}
+📅 ${new Date().toLocaleDateString('zh-CN')}
 
 🎬 观看习惯
 • 总观看：${stats.watches}次
 • 主动结束率：${stats.endRate}
 • 认知多样性熵：${stats.entropy}
 
-🌈 价值观分布
+🚀 成长指标
+• ZPD Velocity：${(recommender.zpdVelocity * 100).toFixed(0)}%
+• Tool Appropriation：${(recommender.toolAppropriation * 100).toFixed(0)}%
+• Curiosity Sparks：${recommender.curiositySpark}次
+• 当前ZPD：L${recommender.currentZpdLow}-L${recommender.currentZpdHigh}
+
+💡 扶光评语：
 `;
-            
-            Object.entries(values).forEach(([key, value]) => {
-                const bar = '█'.repeat(Math.round(value * 10)) + '░'.repeat(10 - Math.round(value * 10));
-                report += `• ${key} [${bar}] ${(value * 100).toFixed(0)}%\n`;
-            });
-            
-            report += `\n💬 扶光评语：`;
-            if (stats.entropy > 2) {
-                report += `兴趣越来越多元化了！`;
-            } else if (stats.endRate > '50%') {
-                report += `越来越懂得控制观看节奏了！`;
+            if (recommender.zpdVelocity > 0.6) {
+                report += '小明最近很勇于挑战更高难度！';
+            } else if (recommender.curiositySpark > 3) {
+                report += '小明自发探索了很多新领域！';
             } else {
-                report += `本周表现不错，继续保持！`;
+                report += '继续保持良好的观看习惯！';
             }
             
             alert(report);
-        }
-        
-        function refreshUI() {
-            const stats = recommender.getStats();
-            document.getElementById('statWatches').textContent = stats.watches;
-            document.getElementById('statEntropy').textContent = stats.entropy;
-            document.getElementById('statEndRate').textContent = stats.endRate;
-            document.getElementById('statComplexity').textContent = stats.complexity;
-            
-            // Update value bars
-            const values = recommender.getValueDistribution();
-            Object.entries(values).forEach(([key, value]) => {
-                const barClass = key.toLowerCase();
-                const bar = document.querySelector(`.value-fill.${barClass}`);
-                if (bar) {
-                    bar.style.width = `${value * 100}%`;
-                }
-            });
         }
         
         function addLog(type, message) {
@@ -999,12 +819,8 @@
             `).join('');
         }
         
-        // Auto-init
         document.addEventListener('DOMContentLoaded', () => {
-            // Show welcome message
-            setTimeout(() => {
-                addLog('system', '🌟 扶光系统已就绪，请设置用户信息开始体验');
-            }, 500);
+            setTimeout(() => addLog('system', '🌟 扶光系统已就绪，请设置用户信息开始体验'), 500);
         });
     </script>
 </body>
