@@ -360,16 +360,16 @@ class EnhancedScaffoldingRecommender:
         feedback_parts = []
         
         if knobs.risk_tolerance > 0.7:
-            feedback_parts.append("扶光会更有冒险精神，推荐一些有挑战性的内容")
+            feedback_parts.append("脚手架系统会更有冒险精神，推荐一些有挑战性的内容")
         elif knobs.risk_tolerance < 0.3:
-            feedback_parts.append("扶光会保守一些，确保内容在安全区内")
+            feedback_parts.append("脚手架系统会保守一些，确保内容在安全区内")
         
         if knobs.diversity_preference > 0.6:
             feedback_parts.append("会带孩子发现更多不同领域")
         elif knobs.diversity_preference < 0.4:
             feedback_parts.append("会专注在一个领域深耕")
         
-        return "；".join(feedback_parts) if feedback_parts else "设置已更新，扶光会相应调整推荐策略"
+        return "；".join(feedback_parts) if feedback_parts else "设置已更新，脚手架系统会相应调整推荐策略"
     
     def get_recommendation(self, count: int = 8) -> List[Dict]:
         """
@@ -524,7 +524,7 @@ class EnhancedScaffoldingRecommender:
             'exploitation': f"因为你之前对「{content.category}」感兴趣",
             'diversity': f"发现新领域！你可能对「{content.category}」好奇",
             'scaffolding': f"这个挑战刚刚好，可以让你更进一步",
-            'exploration': f"扶光觉得这个很有意思，试试看"
+            'exploration': f"脚手架系统觉得这个很有意思，试试看"
         }
         
         reason = reasons.get(strategy, reasons['exploitation'])
@@ -720,7 +720,7 @@ if __name__ == '__main__':
     print("\n家长报告:")
     print(f"  成长指标: {report['growth_metrics']}")
     print(f"  ZPD状态: {report['zpd_status']}")
-    print(f"  扶光评语: {report['fuguang_comment']}")
+    print(f"  系统评语: {report['fuguang_comment']}")
     
     # 可观测性仪表盘
     dashboard = recommender.get_observability_dashboard()

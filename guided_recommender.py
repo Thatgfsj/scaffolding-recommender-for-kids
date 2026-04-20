@@ -679,7 +679,7 @@ class ScaffoldingRecommender:
         for content in contents:
             self.content_library[content.video_id] = content
         
-        print(f"[扶光] 内容库初始化完成，共 {len(self.content_library)} 个视频")
+        print(f"[脚手架系统] 内容库初始化完成，共 {len(self.content_library)} 个视频")
     
     def set_user(self, user_id: str):
         """设置当前用户"""
@@ -687,7 +687,7 @@ class ScaffoldingRecommender:
             user_id=user_id,
             age_group=self.age_group
         )
-        print(f"[扶光] 用户 {user_id} 已初始化")
+        print(f"[脚手架系统] 用户 {user_id} 已初始化")
     
     def update_profile(self, video_id: str, action: str) -> Dict[str, Any]:
         """
@@ -731,7 +731,7 @@ class ScaffoldingRecommender:
         # 更新自然结束奖励
         if action == "natural_end":
             self.user_state.natural_end_bonus += 0.1
-            self.user_state.pending_encouragement = "扶光说：看完了就去做点别的吧！"
+            self.user_state.pending_encouragement = "看完了就去做点别的吧！"
         elif action == "auto_next":
             self.user_state.natural_end_bonus = max(0, self.user_state.natural_end_bonus - 0.05)
         
@@ -1056,7 +1056,7 @@ class ScaffoldingRecommender:
             # 好奇心导向
             return f"好奇心警报！这个视频会回答「为什么会这样」的问题🔍"
         else:
-            return f"扶光觉得这个视频很有意思，推荐给你！"
+            return f"脚手架系统觉得这个视频很有意思，推荐给你！"
     
     def get_parent_report(self) -> Dict[str, Any]:
         """
@@ -1091,7 +1091,7 @@ class ScaffoldingRecommender:
         all_categories = set(v.category for v in self.content_library.values())
         new_categories = all_categories - historical_categories
         
-        # 计算扶光评语
+        # 计算系统评语
         comments = []
         if natural_end_rate > 0.5:
             comments.append("小明越来越懂得控制观看节奏了！")
@@ -1174,7 +1174,7 @@ class ScaffoldingRecommender:
             'semantic_input': semantic_input,
             'adjustments_applied': adjustments,
             'current_weights': {dim.value: w for dim, w in self.user_state.parent_value_weights.items()},
-            'confirmation': f"已收到您的培育意向，系统权重已调整。扶光会重点关注：{', '.join(adjustments.keys())}"
+            'confirmation': f"已收到您的培育意向，系统权重已调整。脚手架系统会重点关注：{', '.join(adjustments.keys())}"
         }
     
     def get_scaffolding_path(self) -> List[str]:
@@ -1210,10 +1210,10 @@ class ScaffoldingRecommender:
         # 发现的好奇点
         curiosity = video.value_tags.get(ValueDimension.CURIOSITY, 0.5)
         if curiosity > 0.7:
-            path_parts.append(f"扶光发现你可能对「{video.sub_category}」很好奇？")
+            path_parts.append(f"脚手架发现你可能对「{video.sub_category}」很好奇？")
         
         # 推荐内容
-        path_parts.append(f"所以我们推荐：「{video.title}」")
+        path_parts.append(f"推荐：「{video.title}」")
         
         # 连接逻辑
         if last_video and video.video_id in last_video.scaffolding_next:

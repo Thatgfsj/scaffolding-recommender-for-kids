@@ -193,7 +193,7 @@ def run_demonstration():
     print("   小明看完后主动关闭，选择'看完了就去做点别的'...")
     result = simulate_user_watch(recommender, recs[0]['video_id'], "natural_end")
     print(f"   系统响应: 自然结束率提升至{result['natural_end_bonus']:.2f}")
-    print(f"   扶光鼓励语: {result.get('encouragement', '')}")
+    print(f"   脚手架系统鼓励语: {result.get('encouragement', '')}")
     
     # -------- 步骤6 --------
     print(f"\n🎬 步骤6：引入'小哥白尼液压机械臂'（核心目标）")
@@ -220,10 +220,10 @@ def run_demonstration():
         print("   │ 📚 你之前看了：                              │")
         print("   │    '挖掘机的大铲子是怎么动的？液压力量'      │")
         print("   │                                             │")
-        print("   │ 🌱 扶光发现你可能对...                       │")
+        print("   │ 🌱 脚手架发现你可能对...                       │")
         print("   │    '自己动手做'很感兴趣？                    │")
         print("   │                                             │")
-        print("   │ 🎯 所以我们推荐：                            │")
+        print("   │ 🎯 推荐：                            │")
         print("   │    '小哥白尼教你用纸杯和吸管做液压机械臂'    │")
         print("   │                                             │")
         print("   │ 🔗 连接逻辑：                                │")
@@ -251,20 +251,20 @@ def run_demonstration():
     simulate_user_watch(recommender, recs[0]['video_id'], "natural_end")
     
     # -------- 步骤8 --------
-    print(f"\n🎬 步骤8：周期性回顾（扶光周报）")
+    print(f"\n🎬 步骤8：周期性回顾（周报）")
     print("-" * 50)
     
     report = recommender.get_parent_report()
     
     print(f"""
     ┌─────────────────────────────────────────────────────────┐
-    │  📊 扶光周报 — {report['report_date']}              │
+    │  📊 周报 — {report['report_date']}              │
     │     关于：{report['user_id']}                              │
     ├─────────────────────────────────────────────────────────┤
     │  🎬 观看习惯                                            │
     │  • 本周总观看：{report['watch_summary']['total_watches']}次                            │
     │  • 主动结束率：{report['watch_summary']['natural_end_rate']}%                            │
-    │  → 扶光评价：{report['watch_summary']['comment']}               │
+    │  → 系统评价：{report['watch_summary']['comment']}               │
     ├─────────────────────────────────────────────────────────┤
     │  🌈 价值观接触分布                                      """)
     
@@ -275,7 +275,7 @@ def run_demonstration():
     print(f"""    ├─────────────────────────────────────────────────────────┤
     │  🔍 兴趣拓展                                             │
     │  • 新拓展领域：{', '.join(report['interest_expansion']['new_areas'][:3]) or '科学实验,机械原理'}           │
-    │  → 扶光评语：{report['fuguang_comment']}                          │
+    │  → 系统评语：{report['fuguang_comment']}                          │
     └─────────────────────────────────────────────────────────┘
     """)
     
@@ -329,7 +329,7 @@ def run_demonstration():
     """)
     
     print_separator("演示完成")
-    print("扶光说：每个孩子都有成为小小科学家的潜力，只需要正确的引导 🧑‍🔬")
+    print("每个孩子都有成为小小科学家的潜力，只需要正确的引导 🧑‍🔬")
     print()
 
 

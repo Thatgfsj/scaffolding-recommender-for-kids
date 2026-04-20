@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>扶光 - 脚手架算法儿童推荐系统</title>
+    <title>脚手架系统 - 脚手架算法儿童推荐系统</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -118,7 +118,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌟 扶光 - 脚手架算法</h1>
+            <h1>🌟 脚手架系统 - 脚手架算法</h1>
             <p>儿童短视频推荐系统 · 认知发展 & 价值观培育</p>
         </div>
         
@@ -212,7 +212,7 @@
             </div>
             
             <div style="margin-top: 20px; display: flex; gap: 12px;">
-                <button class="btn btn-secondary" onclick="showParentReport()">📋 查看扶光周报</button>
+                <button class="btn btn-secondary" onclick="showParentReport()">📋 查看周报</button>
                 <button class="btn btn-primary" onclick="applyKnobs()">✓ 应用设置</button>
             </div>
         </div>
@@ -495,7 +495,7 @@
                     exploitation: `因为你之前对「${video.category}」感兴趣`,
                     diversity: `发现新领域！你可能对「${video.category}」好奇`,
                     scaffolding: `这个挑战刚刚好，可以让你更进一步`,
-                    exploration: `扶光觉得这个很有意思，试试看`
+                    exploration: `脚手架系统觉得这个很有意思，试试看`
                 };
                 let reason = reasons[strategy] || reasons.exploitation;
                 
@@ -645,7 +645,7 @@
             recommender.updateArm(arm, action === 'natural_end' ? 1 : 0.5);
             
             if (action === 'natural_end') {
-                addLog('system', '🎉 扶光：你很有主见地选择看什么！');
+                addLog('system', '🎉 脚手架系统：你很有主见地选择看什么！');
             }
             
             refreshStats();
@@ -688,16 +688,16 @@
             
             const feedback = [];
             if (recommender.parentKnobs.risk_tolerance > 0.7) {
-                feedback.push('扶光会更有冒险精神');
+                feedback.push('脚手架系统会更有冒险精神');
             } else if (recommender.parentKnobs.risk_tolerance < 0.3) {
-                feedback.push('扶光会保守一些');
+                feedback.push('脚手架系统会保守一些');
             }
             if (recommender.parentKnobs.diversity_preference > 0.6) {
                 feedback.push('会带孩子发现更多不同领域');
             }
             
             if (feedback.length) {
-                alert('扶光：' + feedback.join('，') + '！');
+                alert('脚手架系统：' + feedback.join('，') + '！');
             }
         }
         
@@ -773,7 +773,7 @@
             const dashboard = recommender.getDashboard();
             
             let report = `
-📊 扶光周报
+📊 周报
 ━━━━━━━━━━━━━━━━━━
 👤 ${recommender.user.name}
 📅 ${new Date().toLocaleDateString('zh-CN')}
@@ -789,7 +789,7 @@
 • Curiosity Sparks：${recommender.curiositySpark}次
 • 当前ZPD：L${recommender.currentZpdLow}-L${recommender.currentZpdHigh}
 
-💡 扶光评语：
+💡 系统评语：
 `;
             if (recommender.zpdVelocity > 0.6) {
                 report += '小明最近很勇于挑战更高难度！';
@@ -820,7 +820,7 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => addLog('system', '🌟 扶光系统已就绪，请设置用户信息开始体验'), 500);
+            setTimeout(() => addLog('system', '🌟 脚手架系统已就绪，请设置用户信息开始体验'), 500);
         });
     </script>
 </body>
